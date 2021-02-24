@@ -1,2 +1,2 @@
 cd musinsa
-scrapy crawl Musinsa -o top.csv
+scrapy crawl Musinsa -o ./datas/top.csv
