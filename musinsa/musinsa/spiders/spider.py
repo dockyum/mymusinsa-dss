@@ -1,6 +1,7 @@
 
 import scrapy
 from musinsa.items import MusinsaItem
+# from selenium import webdriver
 
 
 class Spider(scrapy.Spider):
@@ -33,4 +34,12 @@ class Spider(scrapy.Spider):
             item["kw"] = ''
         item["img_link"] = "https:" + response.xpath('//*[@id="detail_bigimg"]/div[1]/img/@src')[0].extract()
         item["link"] = response.url
-        yield item       
+        item["item_id"] = item["link"].split('/')[-1]
+        
+        size_kind = response.xpath('//*[@id="size_table"]/tbody/tr/th/text()').extract()
+        item["size_details"] = {}
+        for idx in range(len(size_kind)-1):
+            sd = response.xpath(f'//*[@id="size_table"]/tbody/tr[{idx+3}]/*/text()').extract()
+            item["size_details"][sd[0]] = sd[1:]
+         
+        yield item
