@@ -1,4 +1,4 @@
-# Scrapy settings for musinsa project
+# Scrapy settings for musinsa_2 project
 #
 # For simplicity, this file contains only settings considered important or
 # commonly used. You can find more settings consulting the documentation:
@@ -7,14 +7,14 @@
 #     https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 
-BOT_NAME = 'musinsa'
+BOT_NAME = 'musinsa_2'
 
-SPIDER_MODULES = ['musinsa.spiders']
-NEWSPIDER_MODULE = 'musinsa.spiders'
+SPIDER_MODULES = ['musinsa_2.spiders']
+NEWSPIDER_MODULE = 'musinsa_2.spiders'
 
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
-#USER_AGENT = 'musinsa (+http://www.yourdomain.com)'
+#USER_AGENT = 'musinsa_2 (+http://www.yourdomain.com)'
 
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = False
@@ -45,13 +45,13 @@ ROBOTSTXT_OBEY = False
 # Enable or disable spider middlewares
 # See https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 #SPIDER_MIDDLEWARES = {
-#    'musinsa.middlewares.MusinsaSpiderMiddleware': 543,
+#    'musinsa_2.middlewares.Musinsa2SpiderMiddleware': 543,
 #}
 
 # Enable or disable downloader middlewares
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #DOWNLOADER_MIDDLEWARES = {
-#    'musinsa.middlewares.MusinsaDownloaderMiddleware': 543,
+#    'musinsa_2.middlewares.Musinsa2DownloaderMiddleware': 543,
 #}
 
 # Enable or disable extensions
@@ -62,9 +62,9 @@ ROBOTSTXT_OBEY = False
 
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
-ITEM_PIPELINES = {
-   'musinsa.pipelines.MusinsaPipeline': 300,
-}
+#ITEM_PIPELINES = {
+#    'musinsa_2.pipelines.Musinsa2Pipeline': 300,
+#}
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/autothrottle.html

@@ -1,7 +1,6 @@
 
 import scrapy
 from musinsa.items import MusinsaItem
-from selenium import webdriver
 from fake_useragent import UserAgent
 
 
@@ -10,12 +9,14 @@ class Spider(scrapy.Spider):
     allow_domain = ["musinsa.com"]
     start_urls = ["https://search.musinsa.com/category/001003"]
     custom_settings = {
-        'CONCURRENT_REQUESTS': 3,
-        'DOWNLOAD_DELAY': 6.0,
+        'CONCURRENT_REQUESTS': 10,
+#         'DOWNLOAD_DELAY': 2.0,
         'AUTOTHROTTLE_ENABLED': True,
         "DOWNLOADER_MIDDLEWARES": {
             "scrapy.downloadermiddlewares.useragent.UserAgentMiddleware": None,
+            'scrapy.downloadermiddlewares.retry.RetryMiddleware': None,
             "scrapy_fake_useragent.middleware.RandomUserAgentMiddleware": 400,
+            'scrapy_fake_useragent.middleware.RetryUserAgentMiddleware': 401,
         }
     }
     
@@ -25,37 +26,34 @@ class Spider(scrapy.Spider):
         for link in links:
             yield scrapy.Request(link, callback=self.parse_content)
             
-    def parse_content(self, response):     
+    def parse_content(self, response):
         item = MusinsaItem()
-        options = webdriver.ChromeOptions()
-        options.add_argument("headless")
-        options.add_argument("user-agent={}".format(UserAgent().Chrome))
-        driver = webdriver.Chrome(options=options)        
-        driver.get(response.url)       
-        
+        title = response.xpath('/html/head/title/text()')[0].extract().split(' -')[0]
+        item["title"] = title.split(') ')[1]
+        item["brand"] = response.xpath('//*[@id="product_order_info"]/div[1]/ul/li[1]/p[2]/strong/a/text()')[0].extract()
         try:
-            item["most_age"] = driver.find_elements_by_xpath('//*[@id="graph_summary_area"]/strong[1]')[0].text
+            item["o_price"] = response.xpath('//*[@id="goods_price"]/del/text()')[0].extract().strip()
         except:
-            item["most_age"] = 0
+            item["o_price"] = response.xpath('//*[@id="goods_price"]/text()')[0].extract().strip()
         try:
-            item["most_sex"] = driver.find_elements_by_xpath('//*[@id="graph_summary_area"]/span[1]')[0].text
+            item["s_price"] = response.xpath('//*[@id="sale_price"]/text()')[0].extract().strip()
         except:
-            item["most_sex"] = 0
+            item["s_price"] = item["o_price"]
+        kw = response.xpath('//*[@id="product_order_info"]/div[1]/ul/li[contains(@class, "article-tag-list")]/p/a/text()').extract()
+        item["kw"] = list(map(lambda s : s.replace("#",''), kw))
+        item["img_link"] = "https:" + response.xpath('//*[@id="detail_bigimg"]/div[1]/img/@src')[0].extract()
+        item["link"] = response.url
+        item["item_id"] = item["link"].split('/')[-1]
+        size_kind = response.xpath('//*[@id="size_table"]/tbody/tr/th/text()').extract()
+        item["size_details"] = {}
+        for idx in range(len(size_kind)-1):
+            sd = response.xpath(f'//*[@id="size_table"]/tbody/tr[{idx+3}]/*/text()').extract()
+            item["size_details"][sd[0]] = sd[1:]
+            
+        sc = response.xpath('//*[@id="size_table"]/thead/tr/th[contains(@class, "item_val")]/text()').extract()
+        item["size_category"] = []
+        for idx in range(len(sc)):
+            if idx % 2 != 0:
+                item["size_category"].append(sc[idx].strip())
 
-        option1_ls = driver.find_elements_by_xpath('//*[@id="option1"]/option[not(@value="")]')
-        option1 = [option.get_attribute("value") for option in option1_ls]
-        driver.find_element_by_xpath('//*[@id="option1"]/option[not(@value="")]').click()
-        option2_ls = driver.find_elements_by_xpath('//*[@id="option2"]/option[not(@value="")]')
-        option2 = [option.get_attribute("value") for option in option2_ls]
-
-        for_size = ['90', '95', 'S', 'M', 'L', 'LARGE', '1', 'M_쭈리']
-        if any(x in for_size for x in option1):
-            item["sizes"] = option1
-            item["colors"] = option2
-        else:
-            item["sizes"] = option2
-            item["colors"] = option1
-
-        driver.quit()
-        
         yield item
