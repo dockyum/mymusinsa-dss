@@ -19,10 +19,17 @@ class Spider(scrapy.Spider):
             'scrapy_fake_useragent.middleware.RetryUserAgentMiddleware': 401,
         }
     }
-    
+
+    def __init__(self, midcode="001001", page="1"):
+        self.start_urls = [f"https://search.musinsa.com/category/{midcode}?page={page}/"]
+        super().__init__()
+
+    def start_requests(self):
+        for url in self.start_urls:
+            yield scrapy.Request(url, callback=self.parse)
+            
     def parse(self, response):
-        links = response.xpath('//*[@id="searchList"]/li/div[contains(@class,"li_inner")]\
-/div[2]/p[2]/a/@href').extract()
+        links = response.xpath('//*[@id="searchList"]/li/div[contains(@class,"li_inner")]/div[2]/p[2]/a/@href').extract()
         for link in links:
             yield scrapy.Request(link, callback=self.parse_content)
             
