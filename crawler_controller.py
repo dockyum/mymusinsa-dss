@@ -11,7 +11,7 @@ mid_code = df.loc[40,'mid_code']
 
 page = sys.argv[1] # python mss_crawl_controller.py 3 => 3
 
-command = "cd musinsa/ && scrapy crawl MusinsaItem -o ../datas/mss{}_page{}.csv -a midcode={} -a page={}".format(mid_code, page, mid_code, page)
+command = "cd musinsa/ && scrapy crawl Musinsa -o ../datas/mss{}_page{}.csv -a midcode={} -a page={}".format(mid_code, page, mid_code, page)
 
 os.system(command)
 
