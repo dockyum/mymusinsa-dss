@@ -7,7 +7,6 @@ from fake_useragent import UserAgent
 class Spider(scrapy.Spider):
     name = "Musinsa"
     allow_domain = ["musinsa.com"]
-    start_urls = ["https://search.musinsa.com/category/001003"]
     custom_settings = {
         'CONCURRENT_REQUESTS': 10,
 #         'DOWNLOAD_DELAY': 2.0,
@@ -19,10 +18,17 @@ class Spider(scrapy.Spider):
             'scrapy_fake_useragent.middleware.RetryUserAgentMiddleware': 401,
         }
     }
-    
+
+    def __init__(self, midcode="001001", page="1"):
+        self.start_urls = [f"https://search.musinsa.com/category/{midcode}?page={page}/"]
+        super().__init__()
+
+    def start_requests(self):
+        for url in self.start_urls:
+            yield scrapy.Request(url, callback=self.parse)
+            
     def parse(self, response):
-        links = response.xpath('//*[@id="searchList"]/li/div[contains(@class,"li_inner")]\
-/div[2]/p[2]/a/@href').extract()
+        links = response.xpath('//*[@id="searchList"]/li/div[contains(@class,"li_inner")]/div[2]/p[2]/a/@href').extract()
         for link in links:
             yield scrapy.Request(link, callback=self.parse_content)
             
@@ -40,20 +46,27 @@ class Spider(scrapy.Spider):
         except:
             item["s_price"] = item["o_price"]
         kw = response.xpath('//*[@id="product_order_info"]/div[1]/ul/li[contains(@class, "article-tag-list")]/p/a/text()').extract()
-        item["kw"] = list(map(lambda s : s.replace("#",''), kw))
+        kw = list(map(lambda s : s.replace("#",''), kw))
+        item["kw"] = ",".join(kw)
         item["img_link"] = "https:" + response.xpath('//*[@id="detail_bigimg"]/div[1]/img/@src')[0].extract()
         item["link"] = response.url
         item["item_id"] = item["link"].split('/')[-1]
-        size_kind = response.xpath('//*[@id="size_table"]/tbody/tr/th/text()').extract()
-        item["size_details"] = {}
-        for idx in range(len(size_kind)-1):
-            sd = response.xpath(f'//*[@id="size_table"]/tbody/tr[{idx+3}]/*/text()').extract()
-            item["size_details"][sd[0]] = sd[1:]
             
-        sc = response.xpath('//*[@id="size_table"]/thead/tr/th[contains(@class, "item_val")]/text()').extract()
-        item["size_category"] = []
-        for idx in range(len(sc)):
-            if idx % 2 != 0:
-                item["size_category"].append(sc[idx].strip())
 
+        
+        try:
+            size_kind = response.xpath('//*[@id="size_table"]/tbody/tr/th/text()').extract()[1:]
+        except:
+            size_kind = []
+        item["size_details"] = []
+        for idx in range(len(size_kind)):
+            sd = response.xpath(f'//*[@id="size_table"]/tbody/tr[{idx+3}]/*/text()').extract()
+            sd_str = ','.join(sd[1:])
+            sd = sd[0] + ':' + sd_str 
+            item["size_details"].append(sd)
+        
+        size_category = response.xpath('//*[@id="size_table"]/thead/tr/th/text()[2]').extract()
+        size_category = ','.join([item.strip() for item in size_category])
+        item["size_category"] = size_category
+        
         yield item
