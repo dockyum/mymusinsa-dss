@@ -14,7 +14,7 @@ class MusinsaPipeline():
             host='#SECRET',
             user='root',
             passwd='#SECRET',
-            database='top',
+            database='musinsa',
             charset='utf8',
             use_unicode=True
         )
@@ -29,7 +29,9 @@ class MusinsaPipeline():
                         s_price text,
                         img_link text,
                         link text,
-                        item_id text
+                        item_id text,
+                        kw text,
+                        size_category text
                         )""")
 
     def process_item(self, item, spider):
@@ -37,8 +39,8 @@ class MusinsaPipeline():
         return item
 
     def store_db(self, item):
-        sql = ("""INSERT into item (title, brand, o_price, s_price, img_link, link, item_id)\
-VALUES (%s, %s, %s, %s, %s, %s, %s)""")
+        sql = ("""INSERT into item (title, brand, o_price, s_price, img_link, link, item_id, kw, size_category)\
+VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)""")
         query = (
             item["title"],
             item["brand"],
@@ -46,7 +48,9 @@ VALUES (%s, %s, %s, %s, %s, %s, %s)""")
             item["s_price"],
             item["img_link"],
             item["link"],
-            item["item_id"]
+            item["item_id"],
+            item["kw"],
+            item["size_category"]
         )
         self.curr.execute(sql, query)
         self.conn.commit()    
