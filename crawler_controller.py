@@ -1,19 +1,28 @@
 # -*- coding: utf-8 -*- 
 
 import pandas as pd
-import os, sys
+import os, sys, time
+from category import CategoryCrawler
 
 
-df = pd.read_csv('./datas/categories.csv', dtype ='str')
+def start_crawl(main_code='001', update_category=False):
+    cgc = CategoryCrawler()
+    category_df = cgc.get_mid_category(main_code)
+    
+    if update_category:
+        cgc.update_mid_category()
+        category_df = cgc.get_mid_category()
 
-mid_title = df.loc[40,'mid_title']
-mid_code = df.loc[40,'mid_code']
+    target_df = category_df[category_df['main_code'] == main_code][['mid_title','mid_code']]
+    
+    for _, mid_title, mid_code in target_df.itertuples():
+        target_pages = cgc.parse_page_count(mid_code)
+        
+        for page in range(int(target_pages)):
+            command = f"cd musinsa/ && scrapy crawl Musinsa -a midcode={mid_code} -a page={page+1}"
+            os.system(command)
 
-page = sys.argv[1] # python mss_crawl_controller.py 3 => 3
-
-command = "cd musinsa/ && scrapy crawl Musinsa -o ../datas/mss{}_page{}.csv -a midcode={} -a page={}".format(mid_code, page, mid_code, page)
-
-os.system(command)
-
-dvdr = '*'*30
-print(dvdr , "> finished : {} page={}".format(mid_title,page))
+            dvdr = '*'*40
+            print(dvdr , f">> Crawl Finished : {mid_title} page={page}", sep='\n')
+            
+            time.sleep(10)
