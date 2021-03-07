@@ -11,9 +11,9 @@ class MusinsaPipeline():
 
     def create_connection(self):
         self.conn = mysql.connector.connect(
-            host='#SECRET',
+            host='3.34.115.109',
             user='root',
-            passwd='#SECRET',
+            passwd='dss',
             database='musinsa',
             charset='utf8',
             use_unicode=True
@@ -21,8 +21,7 @@ class MusinsaPipeline():
         self.curr = self.conn.cursor()
 
     def create_table(self):
-        self.curr.execute("""DROP TABLE IF EXISTS item""")
-        self.curr.execute("""create table item(
+        self.curr.execute("""create table IF NOT EXISTS item(
                         title text,
                         brand text,
                         o_price text,
