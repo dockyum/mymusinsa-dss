@@ -11,9 +11,9 @@ class MusinsaPipeline():
 
     def create_connection(self):
         self.conn = mysql.connector.connect(
-            host='3.34.115.109',
+            host='<#SECRET>',
             user='root',
-            passwd='dss',
+            passwd='<#SECRET>',
             database='musinsa',
             charset='utf8',
             use_unicode=True
