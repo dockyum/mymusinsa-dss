@@ -10,5 +10,3 @@ class MusinsaItem(scrapy.Item):
     img_link = scrapy.Field()
     link = scrapy.Field()
     item_id = scrapy.Field()
-    size_category = scrapy.Field()
-    size_details = scrapy.Field()
