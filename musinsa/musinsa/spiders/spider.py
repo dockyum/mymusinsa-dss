@@ -51,19 +51,15 @@ class Spider(scrapy.Spider):
         item["img_link"] = "https:" + response.xpath('//*[@id="detail_bigimg"]/div[1]/img/@src')[0].extract()
         item["link"] = response.url
         item["item_id"] = item["link"].split('/')[-1]
-            
-
         
         try:
             size_kind = response.xpath('//*[@id="size_table"]/tbody/tr/th/text()').extract()[1:]
         except:
             size_kind = []
-        item["size_details"] = []
+        size_details = {}
         for idx in range(len(size_kind)):
             sd = response.xpath(f'//*[@id="size_table"]/tbody/tr[{idx+3}]/*/text()').extract()
-            sd_str = ','.join(sd[1:])
-            sd = sd[0] + ':' + sd_str 
-            item["size_details"].append(sd)
+            size_details[sd[0]] = sd[1:]
         
         size_category = response.xpath('//*[@id="size_table"]/thead/tr/th/text()[2]').extract()
         size_category = ','.join([item.strip() for item in size_category])
