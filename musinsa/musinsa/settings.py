@@ -14,7 +14,7 @@ NEWSPIDER_MODULE = 'musinsa.spiders'
 
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
-#USER_AGENT = 'musinsa (+http://www.yourdomain.com)'
+# USER_AGENT = 'musinsa (+http://www.yourdomain.com)'
 
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = False
@@ -53,6 +53,29 @@ ROBOTSTXT_OBEY = False
 #DOWNLOADER_MIDDLEWARES = {
 #    'musinsa.middlewares.MusinsaDownloaderMiddleware': 543,
 #}
+DOWNLOADER_MIDDLEWARES = {
+    'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': None,
+    'scrapy.downloadermiddlewares.retry.RetryMiddleware': None,
+    'scrapy_fake_useragent.middleware.RandomUserAgentMiddleware': 400,
+    'scrapy_fake_useragent.middleware.RetryUserAgentMiddleware': 401,
+}
+
+FAKEUSERAGENT_PROVIDERS = [
+    'scrapy_fake_useragent.providers.FakeUserAgentProvider',  
+    'scrapy_fake_useragent.providers.FakerProvider', 
+    'scrapy_fake_useragent.providers.FixedUserAgentProvider',  
+]
+
+USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.182 Safari/537.36'
+
+FAKER_RANDOM_UA_TYPE = 'desktop'
+
+FAKEUSERAGENT_FALLBACK = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.182 Safari/537.36'
+
+# RANDOMUSERAGENT_RANDOM_UA_TYPE = {
+#     'hardware_types': 'COMPUTER' ,
+#     'popularity': 'POPULAR'
+# }
 
 # Enable or disable extensions
 # See https://docs.scrapy.org/en/latest/topics/extensions.html
