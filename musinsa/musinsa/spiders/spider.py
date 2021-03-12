@@ -1,5 +1,5 @@
 
-import scrapy
+import scrapy, re
 from musinsa.items import MusinsaItem
 from fake_useragent import UserAgent
 
@@ -9,14 +9,14 @@ class Spider(scrapy.Spider):
     allow_domain = ["musinsa.com"]
     custom_settings = {
         'CONCURRENT_REQUESTS': 10,
-#         'DOWNLOAD_DELAY': 2.0,
+    #         'DOWNLOAD_DELAY': 2.0,
         'AUTOTHROTTLE_ENABLED': True,
-        "DOWNLOADER_MIDDLEWARES": {
-            "scrapy.downloadermiddlewares.useragent.UserAgentMiddleware": None,
-            'scrapy.downloadermiddlewares.retry.RetryMiddleware': None,
-            "scrapy_fake_useragent.middleware.RandomUserAgentMiddleware": 400,
-            'scrapy_fake_useragent.middleware.RetryUserAgentMiddleware': 401,
-        }
+    #         "DOWNLOADER_MIDDLEWARES": {
+    #             "scrapy.downloadermiddlewares.useragent.UserAgentMiddleware": None,
+    #             'scrapy.downloadermiddlewares.retry.RetryMiddleware': None,
+    #             "scrapy_fake_useragent.middleware.RandomUserAgentMiddleware": 400,
+    #             'scrapy_fake_useragent.middleware.RetryUserAgentMiddleware': 401,
+    #         },
     }
 
     def __init__(self, midcode="001001", page="1"):
@@ -28,19 +28,22 @@ class Spider(scrapy.Spider):
             yield scrapy.Request(url, callback=self.parse)
             
     def parse(self, response):
-        links = response.xpath('//*[@id="searchList"]/li/div[contains(@class,"li_inner")]/div[2]/p[2]/a/@href').extract()
+        links = response.xpath('//*[@id="searchList"]/li/div[contains(@class,"li_inner")]/div[1]/a/@href').extract()
         for link in links:
             yield scrapy.Request(link, callback=self.parse_content)
             
     def parse_content(self, response):
         item = MusinsaItem()
         title = response.xpath('/html/head/title/text()')[0].extract().split(' -')[0]
-        item["title"] = title.split(') ')[1]
-        item["brand"] = response.xpath('//*[@id="product_order_info"]/div[1]/ul/li[1]/p[2]/strong/a/text()')[0].extract()
+        item["title"] = title.split(') ')[-1]
+        try:
+            item["brand"] = response.xpath('//*[@id="product_order_info"]/div[1]/ul/li[1]/p[2]/strong/a/text()')[0].extract()
+        except:
+            item["brand"] = response.xpath('//*[@id="product_order_info"]/h2')
         try:
             item["o_price"] = response.xpath('//*[@id="normal_price"]/text()')[0].extract().strip()
         except:
-            o_price = response.xpath('//*[@id="goods_price"]/text()')[0].extract().strip()
+            o_price = response.xpath('//*[@id="goods_price"]/del/text()')[0].extract().strip()
             item["o_price"] = o_price.replace(',','').split('원')[0]
         try:
             s_price = response.xpath('//*[@id="sPrice"]/ul/li/span[2]/text()')[0].extract()
@@ -48,24 +51,11 @@ class Spider(scrapy.Spider):
         except:
             item["s_price"] = item["o_price"]
         kw = response.xpath('//*[@id="product_order_info"]/div[1]/ul/li[contains(@class, "article-tag-list")]/p/a/text()').extract()
-        item["kw"] = list(map(lambda s : s.replace("#",''), kw))
+        kw = response.xpath('//*[@id="product_order_info"]/div[1]/ul/li[contains(@class, "article-tag-list")]/p/a/text()').extract()
+        kw = list(map(lambda s : s.replace("#",''), kw))
+        item["kw"] = ','.join(kw)
         item["img_link"] = "https:" + response.xpath('//*[@id="detail_bigimg"]/div[1]/img/@src')[0].extract()
         item["link"] = response.url
         item["item_id"] = item["link"].split('/')[-1]
-
-        try:
-            size_kind = response.xpath('//*[@id="size_table"]/tbody/tr/th/text()').extract()[1:]
-        except:
-            size_kind = []
-        item["size_details"] = []
-        for idx in range(len(size_kind)):
-            sd = response.xpath(f'//*[@id="size_table"]/tbody/tr[{idx+3}]/*/text()').extract()
-            sd_str = ','.join(sd[1:])
-            sd = sd[0] + ':' + sd_str 
-            item["size_details"].append(sd)
-        
-        size_category = response.xpath('//*[@id="size_table"]/thead/tr/th/text()[2]').extract()
-        size_category = ','.join([item.strip() for item in size_category])
-        item["size_category"] = size_category
         
         yield item
