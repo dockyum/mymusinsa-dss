@@ -38,11 +38,13 @@ class Spider(scrapy.Spider):
         item["title"] = title.split(') ')[1]
         item["brand"] = response.xpath('//*[@id="product_order_info"]/div[1]/ul/li[1]/p[2]/strong/a/text()')[0].extract()
         try:
-            item["o_price"] = response.xpath('//*[@id="goods_price"]/del/text()')[0].extract().strip()
+            item["o_price"] = response.xpath('//*[@id="normal_price"]/text()')[0].extract().strip()
         except:
-            item["o_price"] = response.xpath('//*[@id="goods_price"]/text()')[0].extract().strip()
+            o_price = response.xpath('//*[@id="goods_price"]/text()')[0].extract().strip()
+            item["o_price"] = o_price.replace(',','').split('원')[0]
         try:
-            item["s_price"] = response.xpath('//*[@id="sale_price"]/text()')[0].extract().strip()
+            s_price = response.xpath('//*[@id="sPrice"]/ul/li/span[2]/text()')[0].extract()
+            item["s_price"] = s_price.replace(',','').split('원')[0]
         except:
             item["s_price"] = item["o_price"]
         kw = response.xpath('//*[@id="product_order_info"]/div[1]/ul/li[contains(@class, "article-tag-list")]/p/a/text()').extract()
