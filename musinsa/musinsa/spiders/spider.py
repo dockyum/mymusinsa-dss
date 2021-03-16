@@ -8,19 +8,12 @@ class Spider(scrapy.Spider):
     name = "Musinsa"
     allow_domain = ["musinsa.com"]
     custom_settings = {
-        'CONCURRENT_REQUESTS': 10,
-    #         'DOWNLOAD_DELAY': 2.0,
-        'AUTOTHROTTLE_ENABLED': True,
-    #         "DOWNLOADER_MIDDLEWARES": {
-    #             "scrapy.downloadermiddlewares.useragent.UserAgentMiddleware": None,
-    #             'scrapy.downloadermiddlewares.retry.RetryMiddleware': None,
-    #             "scrapy_fake_useragent.middleware.RandomUserAgentMiddleware": 400,
-    #             'scrapy_fake_useragent.middleware.RetryUserAgentMiddleware': 401,
-    #         },
+        'CONCURRENT_REQUESTS': 12,
+        #         'AUTOTHROTTLE_ENABLED': True,
     }
 
     def __init__(self, midcode="001001", page="1"):
-        self.start_urls = [f"https://search.musinsa.com/category/{midcode}?page={page}/"]
+        self.start_urls = [f"https://search.musinsa.com/category/{midcode}?page_kind=search&list_kind=small&sort=new&page={page}&display_cnt=90"]
         super().__init__()
 
     def start_requests(self):
