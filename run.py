@@ -9,9 +9,13 @@ def start_crawl(main_code='001', update_category=False):
     cgc = CategoryCrawler()
     category_df = cgc.get_mid_category(main_code)
     
-    if update_category:
-        cgc.update_mid_category()
-        category_df = cgc.get_mid_category()
+    while True:
+        check = input('Need parsing again? (y/n): ')
+        if check == 'n':
+            break;
+        else:
+            cgc.update_mid_category()
+            category_df = cgc.get_mid_category()
 
     target_df = category_df[category_df['main_code'] == main_code][['mid_title','mid_code']]
     
@@ -25,4 +29,4 @@ def start_crawl(main_code='001', update_category=False):
             dvdr = '*'*40
             print(dvdr , f">> Crawl Finished : {mid_title} page={page}", sep='\n')
             
-            time.sleep(10)
+            time.sleep(3)

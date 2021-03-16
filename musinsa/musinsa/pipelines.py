@@ -2,7 +2,7 @@ from sqlalchemy import *
 import pandas as pd
 
 
-engine = create_engine("mysql://root:<pswd>@<ip>/top?charset=utf8")
+engine = create_engine("mysql://root:dss@3.36.125.234/mymusinsa?charset=utf8")
 
 class MusinsaPipeline():
     def process_item(self, item, spider):

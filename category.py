@@ -60,7 +60,7 @@ class CategoryCrawler:
             self.middle_code_df = self.middle_code_df.append(code_list_tmp)
             print(main_code, self.middle_code_df.tail(1))
             self.middle_code_df.reset_index(drop=True, inplace=True)
-            print(f'------------finished parsing for {main_code} mid_code-----------')
+            print(f'------------finished parsing for {mid_code} mid_code-----------')
             
         else:
             for code in self.main_code_df['main_code']:
@@ -95,11 +95,8 @@ class CategoryCrawler:
         if self.middle_code_df["mid_title"].size == 0:
             print('run "parse_mid_category" first')
         else:
-            for code in self.main_code_df['main_code'].values:
-                print(self.middle_code_df[self.middle_code_df['main_code'] == str(code)].iloc[0])
-
             while True:
-                category_code = input('Enter a "main code" parse again (quit: q): ')
+                category_code = input('check a "main code" (cancel: q): ')
                 if category_code in self.middle_code_df['main_code'].values:
                     self.middle_code_df.drop(
                         self.middle_code_df[self.middle_code_df['main_code'] == category_code].index, inplace=True)
