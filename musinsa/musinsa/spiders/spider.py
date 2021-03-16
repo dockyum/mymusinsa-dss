@@ -20,7 +20,7 @@ class Spider(scrapy.Spider):
     }
 
     def __init__(self, midcode="001001", page="1"):
-        self.start_urls = [f"https://search.musinsa.com/category/{midcode}?page={page}/"]
+        self.start_urls = [f"https://search.musinsa.com/category/{midcode}?page_kind=search&list_kind=small&sort=new&page={page}&display_cnt=90"]
         super().__init__()
 
     def start_requests(self):
