@@ -8,4 +8,4 @@ selenium
 geohash2
 scrapy
 fake-useragent
-scrapy-fake-useragent=1.4.4
+scrapy-fake-useragent==1.4.4
