@@ -52,15 +52,15 @@ class CategoryCrawler:
             mid_sec = document.select(selector)
             mid_title = [element.get_text() for element in mid_sec]
             mid_code = [re.search(('\d+'),element['href']).group() for element in mid_sec]
-            main_code = [main_code] * len(mid_code)
+            main_codels = [main_code] * len(mid_code)
 
-            code_dict = {"mid_title": mid_title, "mid_code" : mid_code, "main_code": main_code}
+            code_dict = {"mid_title": mid_title, "mid_code" : mid_code, "main_code": main_codels}
             code_list_tmp = pd.DataFrame(code_dict)
 
             self.middle_code_df = self.middle_code_df.append(code_list_tmp)
             print(main_code, self.middle_code_df.tail(1))
             self.middle_code_df.reset_index(drop=True, inplace=True)
-            print(f'------------finished parsing for {mid_code} mid_code-----------')
+            print(f'------------finished parsing for all "{main_code}"-----------')
             
         else:
             for code in self.main_code_df['main_code']:
@@ -76,9 +76,9 @@ class CategoryCrawler:
                 mid_sec = document.select(selector)
                 mid_title = [element.get_text() for element in mid_sec]
                 mid_code = [re.search(('\d+'),element['href']).group() for element in mid_sec]
-                main_code = [code] * len(mid_code)
+                main_codels = [code] * len(mid_code)
 
-                code_dict = {"mid_title": mid_title, "mid_code" : mid_code, "main_code": main_code}
+                code_dict = {"mid_title": mid_title, "mid_code" : mid_code, "main_code": main_codels}
                 code_list_tmp = pd.DataFrame(code_dict)
 
                 self.middle_code_df = self.middle_code_df.append(code_list_tmp)
@@ -96,14 +96,14 @@ class CategoryCrawler:
             print('run "parse_mid_category" first')
         else:
             while True:
-                category_code = input('check a "main code" (cancel: q): ')
+                category_code = input('check a "Main Code" again(quit: q): ')
                 if category_code in self.middle_code_df['main_code'].values:
                     self.middle_code_df.drop(
                         self.middle_code_df[self.middle_code_df['main_code'] == category_code].index, inplace=True)
                     try:
                         url = 'https://search.musinsa.com/ranking/best?period=now&age=ALL&mainCategory={}'.format(category_code)
                         req = requests.get(url)
-                        print(f'request {code} : ',req)
+                        print(f'request {category_code} : ',req)
                     except requests.exceptions.RequestException as e:  
                         raise SystemExit(e)
 
@@ -118,17 +118,18 @@ class CategoryCrawler:
                     code_list_tmp = pd.DataFrame(code_dict)
 
                     self.middle_code_df = self.middle_code_df.append(code_list_tmp)
-                    print('parse done : ', code, self.middle_code_df.tail(1))
+                    print('parse done : ', category_code, self.middle_code_df.tail(1))
                 elif category_code == 'q':
                     break
                 else:
                     print('invalid code. try again')
                     continue
 
-                update_check = input('Update more ? [Y,N]: ')
-                if update_check == 'Y':
+                update_check = input('Update more ? [y,n]: ')
+                if update_check == 'y':
                     continue
                 else:
+                    print('finished update')
                     break
         
     def parse_page_count(self, mid_code):
