@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <title>mymusinsa</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Noto Serif KR', serif;
+        }
+
+        .title {
+            margin-bottom: 40px;
+        }
+
+        .body-cover {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            /* background-color: darkkhaki; */
+        }
+
+        .inputs {
+            width: 80px;
+            height: 40px;
+            margin-right: 6px;
+        }
+
+        .input-layer {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+
+            width: 520px;
+            height: 120px;
+            /* background-color: darkmagenta; */
+        }
+
+        .submit {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 400px;
+            height: 60px;
+            margin-top: 56px;
+            margin-bottom: 80px;
+        }
+
+        .submit-button {
+            width: 132px;
+            height: 48px;
+            border: 0px;
+            border-radius: 12px;
+            background-color: black;
+            font-weight: bold;
+            color: #fff;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .sector {
+            display: block;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            height: 120px;
+            /* background-color: darkslateblue; */
+        }
+
+        .left {
+            align-items: center;
+            text-align: center;
+            /* margin-top: 10px; */
+        }
+
+        .ptext {
+            height: 40px;
+            text-align: center;
+            margin-right: 6px;
+            /* background-color: darkslategray; */
+        }
+
+        .type-selector {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            width: 500px;
+            /* background-color: black; */
+            margin: 30px auto 30px auto;
+
+        }
+
+        .type-selector>button {
+            display: block;
+            justify-content: center;
+            flex-wrap: wrap;
+
+            align-items: center;
+            height: 35px;
+            border-radius: 3px;
+            border: 2px solid black;
+            margin: 10px;
+            cursor: pointer;
+        }
+
+        .type-selector>button:hover {
+            background-color: darkgrey;
+        }
+
+        .guide {
+            background-size: cover;
+            background-position: center;
+            /* background-color: blueviolet; */
+            margin: 0px auto 20px auto;
+            cursor: pointer;
+        }
+
+        #input-div {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 52px;
+            /* background-color: blue; */
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+</head>
+
+<body>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script type="text/javascript">
+        const size_category = { "Top": ["총장", "어깨너비", "가슴단면", "소매길이"], "Outer": ["총장", "어깨너비", "가슴단면", "소매길이"], "Pants": ["총장", "허리단면", "허벅지단면", "밑위", "밑단단면"], "Onepiece": ["총장", "어깨너비", "가슴단면", "소매길이"], "Skirt": ["총장", "허리단면", "밑단단면"] }
+        $(document).ready(function () {
+
+            $(".selector").on("click", function () {
+                var selectType = $(this).text();
+                var tag = "";
+                for (i = 0; i < size_category[selectType].length; i++) {
+                    tag += " <div class='sector left'> ";
+                    tag += "     <p class='ptext'>" + size_category[selectType][i] + "</p> ";
+                    tag += "     <input class='inputs' type='text' /> ";
+                    tag += " </div> ";
+                }
+                $('#input-div').html(tag);
+            })
+        })
+    </script>
+
+
+    <script type="text/javascript">
+
+        $(function () {
+            $("div.guide img").click(function () {
+                var activetab = $(this).attr("guide");
+                if ($("#" + activetab).is("visible")) {
+                    $(".guide img").fadeOut();
+                    $("#" + activetab).fadeOut('fast');
+                } else {
+                    $(".guide img").fadeOut('fast');
+                    $("#" + activetab).fadeIn();
+                }
+            });
+        });
+
+        function Top() {
+            var pic = "https://image.musinsa.com/images/size_type/detail_img/2019070114294200000050283.png"
+            document.getElementById('GuideImg').src = pic;
+            document.getElementById('GuideImg').style.display = 'block';
+        }
+        function Outer() {
+            var pic = "https://image.musinsa.com/images/size_type/detail_img/2019070114215100000009911.png"
+            document.getElementById('GuideImg').src = pic;
+            document.getElementById('GuideImg').style.display = 'block';
+        }
+        function Pants() {
+            var pic = "https://image.musinsa.com/images/size_type/detail_img/2019070114102900000075926.png"
+            document.getElementById('GuideImg').src = pic;
+            document.getElementById('GuideImg').style.display = 'block';
+        }
+        function Onepiece() {
+            var pic = "https://image.musinsa.com/images/size_type/detail_img/2019070114210400000082585.png"
+            document.getElementById('GuideImg').src = pic;
+            document.getElementById('GuideImg').style.display = 'block';
+        }
+        function Skirt() {
+            var pic = "https://image.musinsa.com/images/size_type/detail_img/2019070114121900000092618.png"
+            document.getElementById('GuideImg').src = pic;
+            document.getElementById('GuideImg').style.display = 'block';
+        }
+
+    </script>
+
+    <div class="body-cover">
+        <h1 class="title">MY MUSINSA</h1>
+
+        <div class='type-selector'>
+            <button class="top selector" onclick="Top()">Top</button>
+            <button class="outer selector" onclick="Outer()">Outer</button>
+            <button class="pants selector" onclick="Pants()">Pants</button>
+            <button class="onepiece selector" onclick="Onepiece()">Onepiece</button>
+            <button class="skirt selector" onclick="Skirt()">Skirt</button>
+        </div>
+
+        <div class='guide'>
+            <img id="GuideImg" width="300" height="300" style="display:none;" />
+        </div>
+
+        <div class='input-layer'>
+            <div class="sector left">
+                <p class='ptext'>기준</p>
+                <p class='qtext'>치수입력</p>
+            </div>
+            <div id="input-div">
+            </div>
+
+        </div>
+        <div class='submit'>
+            <button class="submit-button" id="get-data">옷 검색</button>
+        </div>
+    </div>
+
+
+</body>
+
+</html>
