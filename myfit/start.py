@@ -133,7 +133,7 @@ def get_datas():
     result = {}
     datas = []
     for item in items:
-        datas.append({"title":item.title, "brand": item.brand, "url" : item.link})
+        datas.append({"title":item.title, "brand": item.brand, "url" : item.link, "img" : item.img_link})
     result['datas'] = datas
     return jsonify(result)
     

@@ -184,31 +184,20 @@
                     var vl4 = $('.inputContainer > div:nth-child(4) > input').val();
                     var vl5 = $('.inputContainer > div:nth-child(5) > input').val();
 
-                    console.log(vl1);
-                    console.log(vl5);
-                    console.log(maincode);
                     var url = "/getdatas?maincode=" + maincode + "&v1=" + vl1 + "&v2=" + vl2 + "&v3=" + vl3 + "&v4=" + vl4 + "&v5=" + vl5;
-                    console.log(url);
+
                     $.getJSON(url, function(data){
-                        console.log(data);
 
-                        $('.alert').empty();
-                        for(var i=0; i<data.category.length; i++){
-                            var tag = "<p>" + data.category[i] + " : " + data.result[i] + "%</p>";
-                            $('.alert').append(tag);
+                        var tag = "";
+                        for(var i=0; i< data.datas.length; i++){
+                            console.log(data.datas[i].url);
+                            tag += "<tr class='clickable-row clickable'  data-href='" + data.datas[i].url + "'>";
+                            tag += "    <td>" + data.datas[i].brand + "</td>";
+                            tag += "    <td>" + data.datas[i].title + "</td>";
+                            tag += "    <td>" + "<img src='" + data.datas[i].img + "' width='250', height='250'/>" + "</td>";
+                            tag += "</tr>";
                         }
-
-                        var series = [];
-                        for(var i=0; i<data.category.length; i++){
-                            series.push({
-                                name: data.category[i],
-                                y: data.result[i]
-                            })
-                        }
-                        console.log(series);
-
-                        draw_chart(series);
-
+                        $('.table tbody').html(tag);
                     })
                 })
             })
@@ -239,7 +228,32 @@
             <button class="submit-button getData">옷 검색</button>
         </div>
     </div>
-
+    <div class="resultContainer">
+        <table class="table table-blue table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">brand</th>
+                    <th scope="col">title</th>
+                    <th scope="col">image</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>brand</td>
+                    <td>title</td>
+                    <td><img src='https://image.msscdn.net/images/goods_img/20210315/1844107/1844107_1_500.jpg' width='250', height='250'/></td>
+                </tr>
+                <tr class='clickable-row' data-href='https://google.com'>
+                    <td>Blah Blah</td> <td>1234567</td> <td>dfd</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <script>
+        $(document).on("click",".clickable",function() {
+            window.open($(this).data("href"));
+        });
+    </script>
 </body>
 
 </html>
