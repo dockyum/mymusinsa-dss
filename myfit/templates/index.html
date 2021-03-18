@@ -163,28 +163,69 @@
             var pic = "https://image.musinsa.com/images/size_type/detail_img/2019070114294200000050283.png"
             document.getElementById('GuideImg').src = pic;
             document.getElementById('GuideImg').style.display = 'block';
+            maincode = '001'
         }
         function Outer() {
             var pic = "https://image.musinsa.com/images/size_type/detail_img/2019070114215100000009911.png"
             document.getElementById('GuideImg').src = pic;
             document.getElementById('GuideImg').style.display = 'block';
+            maincode = '002'
         }
         function Pants() {
             var pic = "https://image.musinsa.com/images/size_type/detail_img/2019070114102900000075926.png"
             document.getElementById('GuideImg').src = pic;
             document.getElementById('GuideImg').style.display = 'block';
+            maincode = '003'
         }
         function Onepiece() {
             var pic = "https://image.musinsa.com/images/size_type/detail_img/2019070114210400000082585.png"
             document.getElementById('GuideImg').src = pic;
             document.getElementById('GuideImg').style.display = 'block';
+            maincode = '020'
         }
         function Skirt() {
             var pic = "https://image.musinsa.com/images/size_type/detail_img/2019070114121900000092618.png"
             document.getElementById('GuideImg').src = pic;
             document.getElementById('GuideImg').style.display = 'block';
+            maincode = '022'
         }
 
+        $(document).ready(function(){
+                $('.getData').click(function(){
+                    var vl1 = $('.inputContainer > div:nth-child(1) > input').val();
+                    var vl2 = $('.inputContainer > div:nth-child(2) > input').val();
+                    var vl3 = $('.inputContainer > div:nth-child(3) > input').val();
+                    var vl4 = $('.inputContainer > div:nth-child(4) > input').val();
+                    var vl5 = $('.inputContainer > div:nth-child(5) > input').val();
+
+                    console.log(vl1);
+                    console.log(vl5);
+                    console.log(maincode);
+                    var url = "/getdatas?maincode=" + maincode + "&v1=" + vl1 + "&v2=" + vl2 + "&v3=" + vl3 + "&v4=" + vl4 + "&v5=" + vl5;
+                    console.log(url);
+                    $.getJSON(url, function(data){
+                        console.log(data);
+
+                        $('.alert').empty();
+                        for(var i=0; i<data.category.length; i++){
+                            var tag = "<p>" + data.category[i] + " : " + data.result[i] + "%</p>";
+                            $('.alert').append(tag);
+                        }
+
+                        var series = [];
+                        for(var i=0; i<data.category.length; i++){
+                            series.push({
+                                name: data.category[i],
+                                y: data.result[i]
+                            })
+                        }
+                        console.log(series);
+
+                        draw_chart(series);
+
+                    })
+                })
+            })
     </script>
 
     <div class="bodyContainer">
@@ -209,7 +250,7 @@
             </div>
         </div>
         <div class='submitContainer'>
-            <button class="submit-button" id="get-data">옷 검색</button>
+            <button class="submit-button getData">옷 검색</button>
         </div>
     </div>
 

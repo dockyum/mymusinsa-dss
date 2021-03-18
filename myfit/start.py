@@ -3,6 +3,7 @@ sys.path.append('..')
 from flask import *
 from flask_sqlalchemy import SQLAlchemy
 from config import Config
+from sqlalchemy import or_
 
 
 app = Flask(__name__)
@@ -92,17 +93,47 @@ mysql_db.create_all()
 def index():
     return render_template("index.html")
 
-
-@app.route('/get_datas?a=')
-def get_datas(a=50):
-    search_results = Size.query.filter(Size.A_0 == "50", Size.A_1 == '43', Size.main_code == '002')
-    rs = [result.item_id for result in search_results]
+@app.route('/getdatas')
+def get_datas():
+    
+    maincode = request.values.get("maincode")
+    size_values = {}
+    for num in range(1,5):
+        if request.values.get(f"v{num}"):
+        #             vals = int()
+            size_values[f"v{num}"] = request.values.get(f"v{num}")
+    #         [str(vals-1), str(vals), str(vals+1)]
+        
+    print(size_values)
+    
+    if maincode in ['001', '002', '020']:
+        query_request = Size.query.filter(Size.main_code == maincode).filter(or_(Size.A_0 == size_values["v1"], Size.A_1 == size_values["v2"], Size.A_2 == size_values["v3"], Size.A_3 == size_values["v4"])).limit(10)
+        rs = [result.item_id for result in query_request]
+        query_request = Size.query.filter(Size.main_code == maincode).filter(or_(Size.B_0 == size_values["v1"], Size.B_1 == size_values["v2"], Size.B_2 == size_values["v3"], Size.B_3 == size_values["v4"])).limit(10)
+        rs += [result.item_id for result in query_request]
+        query_request = Size.query.filter(Size.main_code == maincode).filter(or_(Size.C_0 == size_values["v1"], Size.C_1 == size_values["v2"], Size.C_2 == size_values["v3"], Size.C_3 == size_values["v4"])).limit(10)
+        rs += [result.item_id for result in query_request]
+        query_request = Size.query.filter(Size.main_code == maincode).filter(or_(Size.D_0 == size_values["v1"], Size.D_1 == size_values["v2"], Size.D_2 == size_values["v3"], Size.D_3 == size_values["v4"])).limit(10)
+        rs += [result.item_id for result in query_request]
+        query_request = Size.query.filter(Size.main_code == maincode).filter(or_(Size.E_0 == size_values["v1"], Size.E_1 == size_values["v2"], Size.E_2 == size_values["v3"], Size.E_3 == size_values["v4"])).limit(10)
+        rs += [result.item_id for result in query_request]
+        query_request = Size.query.filter(Size.main_code == maincode).filter(or_(Size.F_0 == size_values["v1"], Size.F_1 == size_values["v2"], Size.D_2 == size_values["v3"], Size.D_3 == size_values["v4"])).limit(10)
+        rs += [result.item_id for result in query_request]
+        query_request = Size.query.filter(Size.main_code == maincode).filter(or_(Size.G_0 == size_values["v1"], Size.G_1 == size_values["v2"], Size.D_2 == size_values["v3"], Size.D_3 == size_values["v4"])).limit(10)
+        rs += [result.item_id for result in query_request]
+    elif maincode == '003':
+        query_request = Size.query.filter(Size.main_code == maincode).filter(Size.A_0.in_(size_values["v1"])).filter(Size.A_1.in_(size_values["v2"])).filter(Size.A_2.in_(size_values["v3"])).filter(Size.A_3.in_(size_values["v4"])).filter(Size.A_4.in_(size_values["v5"])).limit(5)
+        rs = [result.item_id for result in query_request]
+    elif maincode == '022':
+        query_request = Size.query.filter(Size.main_code == maincode).filter(Size.A_0.in_(size_values["v1"])).filter(Size.A_1.in_(size_values["v2"])).filter(Size.A_2.in_(size_values["v3"])).limit(5)
+        rs = [result.item_id for result in query_request]
+    
     items = Item.query.filter(Item.item_id.in_(rs))
     
     result = {}
     datas = []
     for item in items:
-        datas.append({"title":item.title, "brand": item.brand})
+        datas.append({"title":item.title, "brand": item.brand, "url" : item.link})
     result['datas'] = datas
     return jsonify(result)
     
