@@ -130,3 +130,6 @@ dmypy.json
 
 # DATAS
 *datas/
+
+# INI
+.ini

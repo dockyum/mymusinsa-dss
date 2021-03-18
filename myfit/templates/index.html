@@ -7,32 +7,42 @@
     * {
         box-sizing: border-box;
     }
-    .title {
-        margin-bottom: 40px;
+    h1 {
     }
-    .body-cover{
+    .title {
+        margin-bottom: 48px;
+        font-size: 52px;
+    }
+    .bodyContainer{
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
         height: 100vh;
     }
-    .type-selector {
-        height: 36;
+    .typeContainer {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-bottom: 40px;
+        border-bottom: 1px solid #ececec;
+        padding-bottom: 24px;
+        height: 56px;
         width: 400px;
+    }
+    .inputContainer {
+        display: flex;
+        justify-content: center;
+        width: 500px;
+        height: 120px;
+        margin-top: 40px;
+        border-radius: 12px;
     }
     .inputs {
-        width: 40px;
-        height: 40px;
+        width: 50px;
+        height: 50px;
     }
-    .input-layer {
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-        width: 400px;
-        height: 120px;
-    }
-    .submit {
+    .submitContainer {
         display: flex;
         justify-content: center;
         align-items: center;
@@ -46,60 +56,63 @@
         height: 48px;
         border: 0px;
         border-radius: 12px;
-        background-color: lightblue;
         font-weight: bold;
         color: #fff;
         font-size: 18px;
+        background-color: lightblue;
 
     }
-    .sector {
+    .sizeUnit {
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
         height: 120px;
+        width: 64px;
     }
     .left {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
         align-items: flex-start;
     }
-    .ptext {
-        height: 40px;
-    }
-    .type-selector {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 52px;
-        border-bottom: 40px;
-        border-color: red;
-        border-bottom: 1px solid #ececec;
-        margin-bottom: 8px;
-    }
-    .outer {
-        margin-left: 8px;
-        padding: 4px 8px;
+    .selector {
+        margin-left: 12px;
+        padding: 6px 8px;
+        border-radius: 12px;
     }
     #input-div {
         display: flex;
         justify-content: center;
         align-items: center;
-        height: 52px;    
+        height: 120px;    
+    }
+    .h50 {
+        padding-top: 16px;
+        height: 44px;
+    }
+    .m12 {
+        margin-left: 12px;
     }
     </style>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css">
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 <body>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script type="text/javascript">
-        const size_category = {"Top":["총장","어깨너비","가슴단면","소매길이"], "Pants": ["총장","허리단면","허벅지단면","밑위","밑단단면"]}
+        const size_category = {"Top": ["총장","어깨너비","가슴단면","소매길이"],
+                               "Outer": ["총장","어깨너비","가슴단면","소매길이"],
+                               "Pants": ["총장","허리단면","허벅지단면","밑위","밑단단면"],
+                               "Onepiece": ["총장", "가슴단면"],
+                               "Skirt": ["총장","허리단면","밑단단면"]}
         $(document).ready(function() { 
             
             $(".selector").on("click",function(){
                 var selectType = $(this).text();
                 var tag = "";
                 for (i = 0; i < size_category[selectType].length; i ++){
-                    tag += " <div class='sector left'> ";       
-                    tag += "     <p class='ptext'>" + size_category[selectType][i] + "</p> ";       
+                    tag += " <div class='sizeUnit m12'> ";       
+                    tag += "     <p>" + size_category[selectType][i] + "</p> ";       
                     tag += "     <input class='inputs' type='text' /> ";       
                     tag += " </div> ";       
                 }
@@ -108,25 +121,21 @@
         })
     </script>
 
-    <div class="body-cover">
-        <h1 class="title">MYMUSINSA</h1>
-        <div class='type-selector'>
+    <div class="bodyContainer">
+        <h1 class="title">MY MUSINSA</h1>
+        <div class='typeContainer'>
             <button class="top selector">Top</button>
             <button class="outer selector">Outer</button>
             <button class="pants selector">Pants</button>
             <button class="onepiece selector">Onepiece</button>
             <button class="skirt selector">Skirt</button>
         </div>
-        <div class='input-layer'>
-            <div class="sector left">
-                <p class='ptext'>기준</p>
-                <p>치수입력</p>
-            </div>
+        <div class='inputContainer'>
             <div id="input-div">
+
             </div>
-            
         </div>
-        <div class='submit'>
+        <div class='submitContainer'>
             <button class="submit-button" id="get-data">옷 검색</button>
         </div>
     </div>

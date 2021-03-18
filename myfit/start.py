@@ -1,12 +1,16 @@
+import sys
+sys.path.append('..')
 from flask import *
 from flask_sqlalchemy import SQLAlchemy
+from config import Config
 
 
 app = Flask(__name__)
 app.config.update(TEMPLATES_AUTO_RELOAD=True, DEBUG=True)
+app.config.from_object(Config)
 
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-app.config["SQLALCHEMY_DATABASE_URI"] = "mysql://root:dss@3.36.125.234:3306/mymusinsa?charset=utf8"
+app.config["SQLALCHEMY_DATABASE_URI"] = Config.DATABASE_URL
 
 mysql_db = SQLAlchemy(app)
 
@@ -89,8 +93,8 @@ def index():
     return render_template("index.html")
 
 
-@app.route('/get_datas')
-def get_datas():
+@app.route('/get_datas?a=')
+def get_datas(a=50):
     search_results = Size.query.filter(Size.A_0 == "50", Size.A_1 == '43', Size.main_code == '002')
     rs = [result.item_id for result in search_results]
     items = Item.query.filter(Item.item_id.in_(rs))
