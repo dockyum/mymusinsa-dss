@@ -15,7 +15,7 @@
         }
 
         .title {
-            margin-bottom: 48px;
+            margin: 30px auto 20px auto;
             font-size: 52px;
         }
 
@@ -25,7 +25,6 @@
             align-items: center;
             justify-content: center;
             height: 100vh;
-            /* background-color: darkkhaki; */
         }
 
         .typeContainer {
@@ -34,8 +33,8 @@
             flex-direction: row;
             justify-content: center;
             width: 500px;
-            /* background-color: black; */
             margin: 30px auto 30px auto;
+            
         }
 
         .inputContainer {
@@ -45,14 +44,13 @@
             align-items: center;
             width: 500px;
             height: 120px;
-            margin-top: 40px;
+            margin-top: 10px;
             border-radius: 12px;
         }
                 
         .inputs {
             width: 80px;
             height: 40px;
-            margin-right: 6px;
         }
 
         .sizeUnit {
@@ -70,8 +68,8 @@
             align-items: center;
             width: 400px;
             height: 60px;
-            margin-top: 56px;
-            margin-bottom: 80px;
+            margin-top: 50px;
+            margin-bottom: 37px;
         }
 
         .submit-button {
@@ -86,17 +84,19 @@
             cursor: pointer;
         }
 
+        .sector {
+            margin: auto;
+        }
+
         .left {
             align-items: center;
             text-align: center;
-            /* margin-top: 10px; */
         }
 
         .ptext {
+            width: 100px;
             height: 40px;
             text-align: center;
-            margin-right: 6px;
-            /* background-color: darkslategray; */
         }
 
         .typeContainer>button {
@@ -119,9 +119,8 @@
         .guide {
             background-size: cover;
             background-position: center;
-            /* background-color: blueviolet; */
             margin: 0px auto 20px auto;
-            cursor: pointer;
+            /* cursor: pointer; */
         }
     </style>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -139,33 +138,20 @@
                 for (i = 0; i < size_category[selectType].length; i++) {
                     tag += " <div class='sizeUnit left'> ";
                     tag += "     <p class='ptext'>" + size_category[selectType][i] + "</p> ";
-                    tag += "     <input class='inputs' type='text' /> ";
+                    tag += "     <input class='inputs' type='text' style='text-align:center;'/> ";
                     tag += " </div> ";
                 }
                 $('.inputContainer').html(tag);
             })
         })
-        
-        $(function () {
-            $("div.guide img").click(function () {
-                var activetab = $(this).attr("guide");
-                if ($("#" + activetab).is("visible")) {
-                    $(".guide img").fadeOut();
-                    $("#" + activetab).fadeOut('fast');
-                } else {
-                    $(".guide img").fadeOut('fast');
-                    $("#" + activetab).fadeIn();
-                }
-            });
-        });
 
         function Top() {
-            var pic = "https://image.musinsa.com/images/size_type/detail_img/2019070114294200000050283.png"
+            var pic = "https://image.musinsa.com/images/size_type/detail_img/2019070114282500000014799.png"
             document.getElementById('GuideImg').src = pic;
             document.getElementById('GuideImg').style.display = 'block';
         }
         function Outer() {
-            var pic = "https://image.musinsa.com/images/size_type/detail_img/2019070114215100000009911.png"
+            var pic = "https://image.musinsa.com/images/size_type/detail_img/2019070114233000000047099.png"
             document.getElementById('GuideImg').src = pic;
             document.getElementById('GuideImg').style.display = 'block';
         }
@@ -201,8 +187,8 @@
         </div>
         <div class='inputContainer'>
             <div class="sector left">
-                <p class='ptext'>기준</p>
-                <p class='qtext'>치수입력</p>
+                <p class='ptext'>측정기준</p>
+                <p class='qtext'>치수입력 (cm)</p>
             </div>
             <div id="input-div">
 
