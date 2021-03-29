@@ -1,13 +1,10 @@
-
-import pandas as pd
-from itemadapter import ItemAdapter
 from sqlalchemy import *
-from sqlalchemy.orm import sessionmaker
+import pandas as pd
 
 
-engine = create_engine("mysql://root:<#SECRET>@<#SECRET>/musinsa?charset=utf8")
+engine = create_engine("mysql://root:dss@3.36.125.234/mymusinsa?charset=utf8")
 
-class MusinsaPipeline:
+class MusinsaPipeline():
     def process_item(self, item, spider):
         df = pd.DataFrame([item])
         df.to_sql('item', con=engine, if_exists='append', index=False)

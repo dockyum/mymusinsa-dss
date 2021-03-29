@@ -149,28 +149,58 @@
             var pic = "https://image.musinsa.com/images/size_type/detail_img/2019070114282500000014799.png"
             document.getElementById('GuideImg').src = pic;
             document.getElementById('GuideImg').style.display = 'block';
+            maincode = '001'
         }
         function Outer() {
             var pic = "https://image.musinsa.com/images/size_type/detail_img/2019070114233000000047099.png"
             document.getElementById('GuideImg').src = pic;
             document.getElementById('GuideImg').style.display = 'block';
+            maincode = '002'
         }
         function Pants() {
             var pic = "https://image.musinsa.com/images/size_type/detail_img/2019070114102900000075926.png"
             document.getElementById('GuideImg').src = pic;
             document.getElementById('GuideImg').style.display = 'block';
+            maincode = '003'
         }
         function Onepiece() {
             var pic = "https://image.musinsa.com/images/size_type/detail_img/2019070114210400000082585.png"
             document.getElementById('GuideImg').src = pic;
             document.getElementById('GuideImg').style.display = 'block';
+            maincode = '020'
         }
         function Skirt() {
             var pic = "https://image.musinsa.com/images/size_type/detail_img/2019070114121900000092618.png"
             document.getElementById('GuideImg').src = pic;
             document.getElementById('GuideImg').style.display = 'block';
+            maincode = '022'
         }
 
+        $(document).ready(function(){
+                $('.getData').click(function(){
+                    var vl1 = $('.inputContainer > div:nth-child(1) > input').val();
+                    var vl2 = $('.inputContainer > div:nth-child(2) > input').val();
+                    var vl3 = $('.inputContainer > div:nth-child(3) > input').val();
+                    var vl4 = $('.inputContainer > div:nth-child(4) > input').val();
+                    var vl5 = $('.inputContainer > div:nth-child(5) > input').val();
+
+                    var url = "/getdatas?maincode=" + maincode + "&v1=" + vl1 + "&v2=" + vl2 + "&v3=" + vl3 + "&v4=" + vl4 + "&v5=" + vl5;
+
+                    $.getJSON(url, function(data){
+
+                        var tag = "";
+                        for(var i=0; i< data.datas.length; i++){
+                            console.log(data.datas[i].url);
+                            tag += "<tr class='clickable-row clickable'  data-href='" + data.datas[i].url + "'>";
+                            tag += "    <td>" + data.datas[i].brand + "</td>";
+                            tag += "    <td>" + data.datas[i].title + "</td>";
+                            tag += "    <td>" + "<img src='" + data.datas[i].img + "' width='250', height='auto'/>" + "</td>";
+                            tag += "</tr>";
+                        }
+                        $('.table tbody').html(tag);
+                    })
+                })
+            })
     </script>
 
     <div class="bodyContainer">
@@ -195,10 +225,35 @@
             </div>
         </div>
         <div class='submitContainer'>
-            <button class="submit-button" id="get-data">옷 검색</button>
+            <button class="submit-button getData">옷 검색</button>
         </div>
     </div>
-
+    <div class="resultContainer">
+        <table class="table table-blue table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">brand</th>
+                    <th scope="col">title</th>
+                    <th scope="col">image</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>brand</td>
+                    <td>title</td>
+                    <td><img src='https://i.ibb.co/3smtTGF/3.png' width='250', height='250'/></td>
+                </tr>
+                <tr class='clickable-row' data-href='https://google.com'>
+                    <td> </td> <td> </td> <td> </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <script>
+        $(document).on("click",".clickable",function() {
+            window.open($(this).data("href"));
+        });
+    </script>
 </body>
 
 </html>
