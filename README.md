@@ -1,8 +1,8 @@
-### crawling project
+### crawling project [👉🏻 발표자료](https://docs.google.com/presentation/d/1GLuuufka8ygB66CV1-vV9kHLrMHbu37cH33GUwRJwnM/edit?usp=sharing)
 ![Screen Shot 2021-03-03 at 2 15 48 PM](https://user-images.githubusercontent.com/73205057/109778393-1c58c000-7c48-11eb-92c7-315f022a9802.png)
 - 기간: 2021. 02. 22. -  2021. 03. 19.
-- 김도겸/ item crawling, crawling control, flask
-- 장혜임/ size crawling, README
+- [김도겸](https://github.com/dockyum)/ item crawling, crawling control, flask
+- [장혜임](https://github.com/mieyhgnaj)/ size crawling, README
 
 </br>
 
@@ -19,11 +19,11 @@
 ## 사이트 소개
 무신사 스토어(MUSINSA STORE)
 ### 메인 페이지 url
-> https://store.musinsa.com/app/
+> https://<span></span>store.musinsa.com/app/
 ### 전체 url
-> https://search.musinsa.com/category/{ *중분류 번호* }?device=&d_cat_cd=001001&brand=&rate=&page_kind=search&list_kind=small&sort=pop&sub_sort=&page={ *페이지 번호* }&display_cnt=90&sale_goods=&ex_soldout=&color=&price1=&price2=&exclusive_yn=&size=&tags=&sale_campaign_yn=&timesale_yn=&q=
+> https://<span></span>search.musinsa.com/category/{ *중분류 번호* }?device=&d_cat_cd=001001&brand=&rate=&page_kind=search&list_kind=small&sort=pop&sub_sort=&page={ *페이지 번호* }&display_cnt=90&sale_goods=&ex_soldout=&color=&price1=&price2=&exclusive_yn=&size=&tags=&sale_campaign_yn=&timesale_yn=&q=
 ### 제품 상세 페이지 url
-> https://store.musinsa.com/app/goods/{ *제품 번호* }
+> https://<span></span>store.musinsa.com/app/goods/{ *제품 번호* }
 
 </br>
 
@@ -32,6 +32,7 @@ __step 1__
 카테고리에 해당하는 사이즈 정보를 입력받아 전달    
 ⇒ javascript 활용    
 <img src="https://user-images.githubusercontent.com/73205057/112719683-6f6b1d80-8f3d-11eb-87b3-bba1794c3268.GIF"  width="70%">    
+
 __step 2__    
 MySQL 검색 후 결과 리스트 제공    
 <img src="https://user-images.githubusercontent.com/73205057/112719979-303dcc00-8f3f-11eb-8bf8-b8e383f75158.gif"  width="70%">
@@ -39,7 +40,7 @@ MySQL 검색 후 결과 리스트 제공
 </br>
 
 ## 시스템 구조
-<img src="https://user-images.githubusercontent.com/73205057/112720086-ab06e700-8f3f-11eb-927a-eff0bced3dcc.png"  width="85%">
+<img src="https://user-images.githubusercontent.com/73205057/118106221-55679a80-b418-11eb-900d-1519e25d9dbd.png"  width="85%">
 
 </br>
 
@@ -55,9 +56,11 @@ MySQL 검색 후 결과 리스트 제공
 &emsp; : 서버 1개로 크롤링하기엔 많은 양    
 &emsp; </br>
 &emsp; => Github <-> AWS instance    
-&emsp; </br>
+
 </br>
-<img src="https://user-images.githubusercontent.com/73205057/112721682-a135b180-8f48-11eb-89f0-d1a5e9767d35.png"  width="85%">
+</br>
+
+<img src="https://user-images.githubusercontent.com/73205057/118107376-a330d280-b419-11eb-9047-0d453a8b0d1f.png"  width="85%">
 2. size 데이터의 복잡성    
 &emsp; </br>
 &emsp; : scrapy가 느려짐
@@ -120,7 +123,7 @@ class MusinsaPipeline():
 
 ### size table
 제품마다 S, M, L, ... 등의 사이즈 분류가 유동적    
-<img src="https://user-images.githubusercontent.com/73205057/112720955-bf011780-8f44-11eb-9826-83f045283f98.png"  width="85%">    
+<img src="https://user-images.githubusercontent.com/73205057/118106400-8942c000-b418-11eb-88b0-4124f64f5dfd.png"  width="85%">    
 => 일반적인 컬럼명으로 데이터 구조화    
 => 했지만... 후에 문제 발생..
 
