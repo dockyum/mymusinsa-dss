@@ -1,8 +1,8 @@
-# crawling project 
+# My musinsa
 ![Screen Shot 2021-03-03 at 2 15 48 PM](https://user-images.githubusercontent.com/73205057/109778393-1c58c000-7c48-11eb-92c7-315f022a9802.png)
-- 기간: 2021. 02. 22. -  2021. 03. 19.
-- [김도겸](https://github.com/dockyum)/ item crawling, crawling control, flask
-- [장혜임](https://github.com/mieyhgnaj)/ size crawling, README
+- 기간 : 2021. 02. 22. -  2021. 03. 19.
+- [김도겸](https://github.com/dockyum) / item crawling, crawling control, flask
+- [장혜임](https://github.com/mieyhgnaj) / size crawling, README
 - [👉🏻 발표자료](https://docs.google.com/presentation/d/1GLuuufka8ygB66CV1-vV9kHLrMHbu37cH33GUwRJwnM/edit?usp=sharing)
 
 </br>
